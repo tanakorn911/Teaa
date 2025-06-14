@@ -1,0 +1,29 @@
+<svg viewBox="0 0 200 200" xmlns="http://www.w3.org/2000/svg">
+  <!-- Background -->
+  <rect width="200" height="200" fill="#F5DEB3"/>
+  
+  <!-- Cup -->
+  <ellipse cx="100" cy="170" rx="45" ry="8" fill="#8B4513" opacity="0.3"/>
+  <rect x="70" y="80" width="60" height="80" rx="8" fill="#A0522D" stroke="#6B3410" stroke-width="2"/>
+  
+  <!-- Coffee -->
+  <rect x="75" y="100" width="50" height="50" rx="5" fill="#3E2723"/>
+  
+  <!-- Milk Foam -->
+  <ellipse cx="100" cy="100" rx="25" ry="15" fill="#FFFFFF"/>
+  <circle cx="90" cy="95" r="3" fill="#F0F0F0"/>
+  <circle cx="110" cy="100" r="4" fill="#F0F0F0"/>
+  <circle cx="100" cy="90" r="2" fill="#F0F0F0"/>
+  
+  <!-- Bubbles -->
+  <circle cx="85" cy="125" r="6" fill="#6B3410"/>
+  <circle cx="105" cy="135" r="5" fill="#6B3410"/>
+  <circle cx="95" cy="145" r="7" fill="#6B3410"/>
+  <circle cx="115" cy="140" r="4" fill="#6B3410"/>
+  
+  <!-- Handle -->
+  <path d="M130 100 Q140 100 140 120 Q140 140 130 140" stroke="#A0522D" stroke-width="4" fill="none"/>
+  
+  <!-- Latte Art -->
+  <path d="M95 95 Q100 90 105 95 Q100 100 95 95" fill="#DEB887"/>
+</svg>

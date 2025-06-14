@@ -1,0 +1,32 @@
+<svg viewBox="0 0 200 200" xmlns="http://www.w3.org/2000/svg">
+  <!-- Background -->
+  <rect width="200" height="200" fill="#F5DEB3"/>
+  
+  <!-- Traditional Tea Cup -->
+  <ellipse cx="100" cy="170" rx="40" ry="8" fill="#8B4513" opacity="0.3"/>
+  <rect x="75" y="90" width="50" height="70" rx="6" fill="#8B4513" stroke="#6B3410" stroke-width="2"/>
+  
+  <!-- Oolong Tea -->
+  <rect x="80" y="95" width="40" height="60" rx="4" fill="#8B6914"/>
+  
+  <!-- Tea Leaves -->
+  <ellipse cx="90" cy="100" rx="3" ry="6" fill="#556B2F" transform="rotate(30 90 100)"/>
+  <ellipse cx="110" cy="105" rx="2" ry="5" fill="#556B2F" transform="rotate(-45 110 105)"/>
+  <ellipse cx="100" cy="110" rx="3" ry="5" fill="#556B2F" transform="rotate(60 100 110)"/>
+  
+  <!-- Bubbles -->
+  <circle cx="85" cy="125" r="7" fill="#6B3410"/>
+  <circle cx="105" cy="135" r="5" fill="#6B3410"/>
+  <circle cx="95" cy="145" r="6" fill="#6B3410"/>
+  <circle cx="115" cy="140" r="4" fill="#6B3410"/>
+  
+  <!-- Traditional Handle -->
+  <path d="M125 110 Q135 110 135 130 Q135 150 125 150" stroke="#8B4513" stroke-width="3" fill="none"/>
+  
+  <!-- Steam -->
+  <path d="M95 85 Q90 75 95 65 Q100 55 95 45" stroke="#DEB887" stroke-width="2" fill="none" opacity="0.6"/>
+  <path d="M105 85 Q110 75 105 65 Q100 55 105 45" stroke="#DEB887" stroke-width="2" fill="none" opacity="0.6"/>
+  
+  <!-- Chinese Character -->
+  <text x="140" y="60" font-family="serif" font-size="16" fill="#8B6914">烏龍</text>
+</svg>

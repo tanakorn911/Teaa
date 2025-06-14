@@ -1,0 +1,169 @@
+@rendermode @(AppDomain.CurrentDomain.FriendlyName.Contains("Tea.Web") ? Microsoft.AspNetCore.Components.Web.RenderMode.InteractiveServer : null)
+@page "/cart"
+@using Tea.Shared.Services
+@using Tea.Shared.Models
+@using Tea.Shared.Components
+@inject LanguageService LanguageService
+@inject CartService CartService
+@inject NavigationManager Navigation
+@implements IDisposable
+
+<PageTitle>@LanguageService.GetText("ตะกร้าสินค้า - BUBBLICIOUS", "Shopping Cart - BUBBLICIOUS")</PageTitle>
+
+<div class="cart-container">
+    <div class="language-toggle-container">
+        <LanguageToggle />
+    </div>
+
+    <div class="cart-header">
+        <h1 class="cart-title">@LanguageService.GetText("รายการสั่งซื้อ", "Order Details")</h1>
+        <button class="btn-secondary" @onclick="GoBackToMenu">
+            @LanguageService.GetText("กลับไปเมนู", "Back to Menu")
+        </button>
+    </div>
+
+    @if (cartItems.Any())
+    {
+        <div class="cart-items">
+            @foreach (var item in cartItems)
+            {
+                <div class="cart-item">
+                    <div class="item-image">
+                        <img src="@item.Beverage.ImageUrl" alt="@GetBeverageName(item.Beverage)" onerror="this.src='/img/default-beverage.svg'" />
+                    </div>
+                    
+                    <div class="item-details">
+                        <h3 class="item-name">@GetBeverageName(item.Beverage)</h3>
+                        
+                        @if (item.SelectedToppings.Any())
+                        {
+                            <div class="item-toppings">
+                                <span class="toppings-label">@LanguageService.GetText("ท็อปปิ้ง:", "Toppings:"):</span>
+                                @foreach (var topping in item.SelectedToppings)
+                                {
+                                    <span class="topping-tag">@GetToppingName(topping)</span>
+                                }
+                            </div>
+                        }
+                        
+                        <div class="item-options">
+                            <span>@LanguageService.GetText("ความหวาน:", "Sweetness:")</span> @((int)item.SweetnessLevel)%
+                            <span class="option-separator">|</span>
+                            <span>@LanguageService.GetText("น้ำแข็ง:", "Ice:")</span> @GetIceLevelText(item.IceLevel)
+                        </div>
+                        
+                        <div class="item-price">
+                            <span class="unit-price">฿@(item.Beverage.Price + item.SelectedToppings.Sum(t => t.Price)) × @item.Quantity</span>
+                            <span class="total-price">= ฿@item.TotalPrice</span>
+                        </div>
+                    </div>
+                    
+                    <div class="item-controls">
+                        <div class="quantity-controls">
+                            <button class="quantity-btn" @onclick="() => UpdateQuantity(item.Id, item.Quantity - 1)" disabled="@(item.Quantity <= 1)">-</button>
+                            <span class="quantity-display">@item.Quantity</span>
+                            <button class="quantity-btn" @onclick="() => UpdateQuantity(item.Id, item.Quantity + 1)">+</button>
+                        </div>
+                        <button class="remove-btn" @onclick="() => RemoveItem(item.Id)">
+                            @LanguageService.GetText("ลบ", "Remove")
+                        </button>
+                    </div>
+                </div>
+            }
+        </div>
+
+        <div class="cart-summary">
+            <div class="summary-row">
+                <span>@LanguageService.GetText("จำนวนรายการ:", "Total Items:")</span>
+                <span>@CartService.GetCartItemCount() @LanguageService.GetText("ชิ้น", "items")</span>
+            </div>
+            <div class="summary-row total-row">
+                <span>@LanguageService.GetText("ราคารวม:", "Total Amount:")</span>
+                <span class="total-amount">฿@CartService.GetCartTotal()</span>
+            </div>
+            
+            <button class="order-btn" @onclick="PlaceOrder">
+                @LanguageService.GetText("สั่งซื้อเลย!", "Place Order!")
+            </button>
+        </div>
+    }
+    else
+    {
+        <div class="empty-cart">
+            <div class="empty-cart-icon">🛒</div>
+            <h2>@LanguageService.GetText("ตะกร้าว่างเปล่า", "Your cart is empty")</h2>
+            <p>@LanguageService.GetText("เพิ่มเครื่องดื่มที่คุณชื่นชอบลงในตะกร้า", "Add your favorite beverages to the cart")</p>
+            <button class="btn-primary" @onclick="GoBackToMenu">
+                @LanguageService.GetText("เลือกเครื่องดื่ม", "Browse Beverages")
+            </button>
+        </div>
+    }
+</div>
+
+@code {
+    private List<CartItem> cartItems = new();
+
+    protected override void OnInitialized()
+    {
+        LanguageService.LanguageChanged += StateHasChanged;
+        CartService.CartChanged += LoadCartItems;
+        LoadCartItems();
+    }
+
+    private void LoadCartItems()
+    {
+        cartItems = CartService.GetCartItems();
+        StateHasChanged();
+    }
+
+    private string GetBeverageName(BeverageItem beverage)
+    {
+        return LanguageService.CurrentLanguage == Language.Thai ? beverage.NameThai : beverage.NameEnglish;
+    }
+
+    private string GetToppingName(Topping topping)
+    {
+        return LanguageService.CurrentLanguage == Language.Thai ? topping.NameThai : topping.NameEnglish;
+    }
+
+    private string GetIceLevelText(IceLevel iceLevel)
+    {
+        return iceLevel switch
+        {
+            IceLevel.None => LanguageService.GetText("ไม่ใส่", "No Ice"),
+            IceLevel.Light => LanguageService.GetText("น้อย", "Light"),
+            IceLevel.Normal => LanguageService.GetText("ปกติ", "Normal"),
+            IceLevel.Extra => LanguageService.GetText("เยอะ", "Extra"),
+            _ => ""
+        };
+    }
+
+    private void UpdateQuantity(int cartItemId, int newQuantity)
+    {
+        CartService.UpdateQuantity(cartItemId, newQuantity);
+    }
+
+    private void RemoveItem(int cartItemId)
+    {
+        CartService.RemoveFromCart(cartItemId);
+    }
+
+    private void GoBackToMenu()
+    {
+        Navigation.NavigateTo("/menu");
+    }
+
+    private void PlaceOrder()
+    {
+        if (cartItems.Any())
+        {
+            Navigation.NavigateTo("/qr-payment");
+        }
+    }
+
+    public void Dispose()
+    {
+        LanguageService.LanguageChanged -= StateHasChanged;
+        CartService.CartChanged -= LoadCartItems;
+    }
+}

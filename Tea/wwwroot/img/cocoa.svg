@@ -1,0 +1,53 @@
+<svg viewBox="0 0 200 200" xmlns="http://www.w3.org/2000/svg">
+  <!-- Background -->
+  <rect width="200" height="200" fill="#F5DEB3"/>
+  
+  <!-- Cup -->
+  <ellipse cx="100" cy="170" rx="45" ry="8" fill="#8B4513" opacity="0.3"/>
+  <rect x="70" y="80" width="60" height="80" rx="8" fill="#8B4513" stroke="#6B3410" stroke-width="2"/>
+  
+  <!-- Cocoa Drink -->
+  <rect x="75" y="95" width="50" height="60" rx="5" fill="#5D4037"/>
+  
+  <!-- Whipped Cream -->
+  <ellipse cx="100" cy="95" rx="25" ry="12" fill="#FFFFFF"/>
+  <circle cx="85" cy="90" r="4" fill="#F5F5F5"/>
+  <circle cx="115" cy="93" r="3" fill="#F5F5F5"/>
+  <circle cx="100" cy="87" r="3" fill="#F5F5F5"/>
+  <circle cx="95" cy="100" r="2" fill="#F5F5F5"/>
+  <circle cx="105" cy="98" r="2" fill="#F5F5F5"/>
+  
+  <!-- Cocoa Powder -->
+  <circle cx="92" cy="85" r="1" fill="#3E2723"/>
+  <circle cx="108" cy="88" r="0.8" fill="#3E2723"/>
+  <circle cx="100" cy="90" r="1.2" fill="#3E2723"/>
+  
+  <!-- Marshmallows -->
+  <rect x="88" y="82" width="4" height="4" fill="#FFFACD" rx="1"/>
+  <rect x="108" y="85" width="3" height="3" fill="#FFFACD" rx="1"/>
+  <rect x="98" y="80" width="4" height="4" fill="#FFFACD" rx="1"/>
+  
+  <!-- Bubbles -->
+  <circle cx="85" cy="125" r="8" fill="#6B3410"/>
+  <circle cx="105" cy="135" r="6" fill="#6B3410"/>
+  <circle cx="95" cy="145" r="7" fill="#6B3410"/>
+  <circle cx="115" cy="140" r="5" fill="#6B3410"/>
+  <circle cx="90" cy="150" r="6" fill="#6B3410"/>
+  
+  <!-- Brown Straw -->
+  <rect x="115" y="60" width="4" height="70" fill="#8B4513" transform="rotate(15 117 95)"/>
+  
+  <!-- Cocoa Beans on Side -->
+  <ellipse cx="50" cy="50" rx="4" ry="8" fill="#3E2723" transform="rotate(30 50 50)"/>
+  <path d="M50 45 L50 55" stroke="#2C1810" stroke-width="1"/>
+  
+  <ellipse cx="150" cy="60" rx="3" ry="6" fill="#3E2723" transform="rotate(-20 150 60)"/>
+  <path d="M150 57 L150 63" stroke="#2C1810" stroke-width="1"/>
+  
+  <ellipse cx="160" cy="40" rx="3" ry="6" fill="#3E2723" transform="rotate(45 160 40)"/>
+  <path d="M160 37 L160 43" stroke="#2C1810" stroke-width="1"/>
+  
+  <!-- Steam -->
+  <path d="M90 70 Q85 60 90 50 Q95 40 90 30" stroke="#8B4513" stroke-width="2" fill="none" opacity="0.7"/>
+  <path d="M110 70 Q105 60 110 50 Q115 40 110 30" stroke="#8B4513" stroke-width="2" fill="none" opacity="0.7"/>
+</svg>

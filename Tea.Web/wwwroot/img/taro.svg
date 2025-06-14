@@ -1,0 +1,49 @@
+<svg viewBox="0 0 200 200" xmlns="http://www.w3.org/2000/svg">
+  <!-- Background -->
+  <rect width="200" height="200" fill="#F5DEB3"/>
+  
+  <!-- Cup -->
+  <ellipse cx="100" cy="170" rx="45" ry="8" fill="#8B4513" opacity="0.3"/>
+  <rect x="70" y="80" width="60" height="80" rx="8" fill="#8B4513" stroke="#6B3410" stroke-width="2"/>
+  
+  <!-- Taro Drink -->
+  <rect x="75" y="85" width="50" height="70" rx="5" fill="#9370DB"/>
+  
+  <!-- Taro Chunks -->
+  <ellipse cx="90" cy="100" rx="4" ry="6" fill="#8A2BE2"/>
+  <ellipse cx="110" cy="105" rx="3" ry="5" fill="#8A2BE2"/>
+  <ellipse cx="100" cy="115" rx="5" ry="4" fill="#8A2BE2"/>
+  <ellipse cx="85" cy="120" rx="3" ry="4" fill="#8A2BE2"/>
+  <ellipse cx="115" cy="125" rx="4" ry="3" fill="#8A2BE2"/>
+  
+  <!-- Creamy Swirl -->
+  <path d="M80 90 Q90 85 100 90 Q110 95 120 90" stroke="#E6E6FA" stroke-width="3" fill="none"/>
+  <path d="M80 100 Q90 95 100 100 Q110 105 120 100" stroke="#E6E6FA" stroke-width="2" fill="none"/>
+  
+  <!-- Ice -->
+  <rect x="80" y="130" width="8" height="8" fill="#E6F3FF" opacity="0.8"/>
+  <rect x="110" y="135" width="6" height="6" fill="#E6F3FF" opacity="0.8"/>
+  
+  <!-- Bubbles -->
+  <circle cx="85" cy="135" r="8" fill="#6B3410"/>
+  <circle cx="105" cy="125" r="6" fill="#6B3410"/>
+  <circle cx="95" cy="145" r="7" fill="#6B3410"/>
+  <circle cx="115" cy="140" r="5" fill="#6B3410"/>
+  <circle cx="90" cy="150" r="6" fill="#6B3410"/>
+  
+  <!-- Purple Straw -->
+  <rect x="115" y="60" width="4" height="70" fill="#9932CC" transform="rotate(15 117 95)"/>
+  
+  <!-- Taro Root on Side -->
+  <ellipse cx="45" cy="55" rx="8" ry="15" fill="#8A2BE2"/>
+  <path d="M40 50 Q45 45 50 50" stroke="#9370DB" stroke-width="2" fill="none"/>
+  <path d="M40 60 Q45 65 50 60" stroke="#9370DB" stroke-width="2" fill="none"/>
+  
+  <ellipse cx="155" cy="65" rx="6" ry="12" fill="#8A2BE2"/>
+  <path d="M152 60 Q155 57 158 60" stroke="#9370DB" stroke-width="1" fill="none"/>
+  
+  <!-- Whipped Cream -->
+  <ellipse cx="100" cy="85" rx="20" ry="8" fill="#F8F8FF"/>
+  <circle cx="90" cy="82" r="2" fill="#E6E6FA"/>
+  <circle cx="110" cy="85" r="2" fill="#E6E6FA"/>
+</svg>

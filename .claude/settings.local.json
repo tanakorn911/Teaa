@@ -1,0 +1,20 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(mkdir:*)",
+      "Bash(dotnet build)",
+      "Bash(dotnet run:*)",
+      "Bash(grep:*)",
+      "Bash(cp:*)",
+      "Bash(/home/panupong/.claude/local/node_modules/@anthropic-ai/claude-code/vendor/ripgrep/x64-linux/rg -n \"floating-bubbles-success|z-index\" bubble-tea-styles.css)",
+      "Bash(rm:*)",
+      "Bash(ls:*)",
+      "Bash(find:*)",
+      "Bash(dotnet clean:*)",
+      "Bash(dotnet build:*)",
+      "Bash(dotnet restore)",
+      "Bash(rg:*)"
+    ],
+    "deny": []
+  }
+}

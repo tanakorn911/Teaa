@@ -1,0 +1,35 @@
+<svg viewBox="0 0 200 200" xmlns="http://www.w3.org/2000/svg">
+  <!-- Background -->
+  <rect width="200" height="200" fill="#F5DEB3"/>
+  
+  <!-- Saucer -->
+  <ellipse cx="100" cy="170" rx="50" ry="10" fill="#8B4513"/>
+  
+  <!-- Small Cup -->
+  <rect x="80" y="110" width="40" height="50" rx="6" fill="#6B3410" stroke="#4A2C17" stroke-width="2"/>
+  
+  <!-- Espresso -->
+  <rect x="85" y="115" width="30" height="40" rx="4" fill="#1A0E0A"/>
+  
+  <!-- Crema -->
+  <ellipse cx="100" cy="115" rx="15" ry="5" fill="#8B4513"/>
+  
+  <!-- Bubbles -->
+  <circle cx="90" cy="135" r="4" fill="#6B3410"/>
+  <circle cx="105" cy="140" r="3" fill="#6B3410"/>
+  <circle cx="95" cy="145" r="5" fill="#6B3410"/>
+  <circle cx="110" cy="145" r="3" fill="#6B3410"/>
+  
+  <!-- Handle -->
+  <path d="M120 125 Q125 125 125 135 Q125 145 120 145" stroke="#6B3410" stroke-width="3" fill="none"/>
+  
+  <!-- Strong Steam -->
+  <path d="M95 105 Q90 95 95 85 Q100 75 95 65" stroke="#8B4513" stroke-width="3" fill="none" opacity="0.8"/>
+  <path d="M105 105 Q110 95 105 85 Q100 75 105 65" stroke="#8B4513" stroke-width="3" fill="none" opacity="0.8"/>
+  
+  <!-- Coffee Beans -->
+  <ellipse cx="60" cy="50" rx="6" ry="10" fill="#3E2723" transform="rotate(45 60 50)"/>
+  <path d="M60 45 L60 55" stroke="#2E1A17" stroke-width="1"/>
+  <ellipse cx="140" cy="60" rx="6" ry="10" fill="#3E2723" transform="rotate(-30 140 60)"/>
+  <path d="M140 55 L140 65" stroke="#2E1A17" stroke-width="1"/>
+</svg>

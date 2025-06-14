@@ -1,0 +1,33 @@
+<svg viewBox="0 0 200 200" xmlns="http://www.w3.org/2000/svg">
+  <!-- Background -->
+  <rect width="200" height="200" fill="#F5DEB3"/>
+  
+  <!-- Cup -->
+  <ellipse cx="100" cy="170" rx="45" ry="8" fill="#8B4513" opacity="0.3"/>
+  <rect x="70" y="80" width="60" height="80" rx="8" fill="#8B4513" stroke="#6B3410" stroke-width="2"/>
+  
+  <!-- Thai Tea -->
+  <rect x="75" y="110" width="50" height="45" rx="5" fill="#FF8C00"/>
+  
+  <!-- Milk Layer -->
+  <rect x="75" y="85" width="50" height="25" rx="5" fill="#FFFACD"/>
+  
+  <!-- Ice -->
+  <rect x="80" y="90" width="8" height="8" fill="#E6F3FF" opacity="0.8"/>
+  <rect x="115" y="95" width="6" height="6" fill="#E6F3FF" opacity="0.8"/>
+  <rect x="95" y="100" width="7" height="7" fill="#E6F3FF" opacity="0.8"/>
+  
+  <!-- Bubbles -->
+  <circle cx="85" cy="135" r="8" fill="#6B3410"/>
+  <circle cx="105" cy="125" r="6" fill="#6B3410"/>
+  <circle cx="95" cy="145" r="7" fill="#6B3410"/>
+  <circle cx="115" cy="140" r="5" fill="#6B3410"/>
+  <circle cx="90" cy="150" r="6" fill="#6B3410"/>
+  
+  <!-- Straw -->
+  <rect x="115" y="60" width="4" height="70" fill="#FF1493" transform="rotate(15 117 95)"/>
+  
+  <!-- Thai Pattern -->
+  <path d="M85 88 L95 88 L90 93 Z" fill="#DAA520"/>
+  <path d="M105 92 L115 92 L110 97 Z" fill="#DAA520"/>
+</svg>

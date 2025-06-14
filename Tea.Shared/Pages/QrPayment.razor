@@ -1,0 +1,298 @@
+@rendermode @(AppDomain.CurrentDomain.FriendlyName.Contains("Tea.Web") ? Microsoft.AspNetCore.Components.Web.RenderMode.InteractiveServer : null)
+@page "/qr-payment"
+@using Tea.Shared.Services
+@using Tea.Shared.Models
+@using Tea.Shared.Components
+@inject LanguageService LanguageService
+@inject CartService CartService
+@inject PaymentService PaymentService
+@inject NavigationManager Navigation
+@implements IDisposable
+
+
+<PageTitle>@LanguageService.GetText("ชำระเงิน - BUBBLICIOUS", "Payment - BUBBLICIOUS")</PageTitle>
+
+<div class="payment-container">
+    <div class="language-toggle-container">
+        <LanguageToggle />
+    </div>
+
+    <div class="payment-header">
+        <h1 class="payment-title">@LanguageService.GetText("สแกน QR Code เพื่อชำระเงิน", "Scan QR Code to Pay")</h1>
+        <button class="btn-secondary" @onclick="GoBackToCart">
+            @LanguageService.GetText("กลับไปตะกร้า", "Back to Cart")
+        </button>
+    </div>
+
+    @if (!cartItems.Any())
+    {
+        <div class="loading-container">
+            <div class="loading-spinner"></div>
+            <p>@LanguageService.GetText("กำลังตรวจสอบตะกร้า...", "Checking cart...")</p>
+        </div>
+    }
+    else if (isLoading)
+    {
+        <div class="loading-container">
+            <div class="loading-spinner"></div>
+            <p>@LanguageService.GetText("กำลังสร้าง QR Code...", "Generating QR Code...")</p>
+        </div>
+    }
+    else if (charge != null && charge.Source?.ScannableCode?.Image != null)
+    {
+        <div class="qr-payment-content">
+            <div class="order-summary">
+                <h3>@LanguageService.GetText("สรุปคำสั่งซื้อ", "Order Summary")</h3>
+                <div class="summary-items">
+                    @foreach (var item in cartItems)
+                    {
+                        <div class="summary-item">
+                            <span class="item-name">@GetBeverageName(item.Beverage) × @item.Quantity</span>
+                            <span class="item-price">฿@item.TotalPrice</span>
+                        </div>
+                    }
+                </div>
+                <div class="total-amount">
+                    <strong>@LanguageService.GetText("ยอดรวม:", "Total:") ฿@totalAmount</strong>
+                </div>
+            </div>
+
+            <div class="qr-code-section">
+                <div class="qr-code-container">
+                    <img src="@charge.Source.ScannableCode.Image.DownloadUri" 
+                         alt="PromptPay QR Code" 
+                         class="qr-code-image" />
+                </div>
+                
+                <div class="payment-instructions">
+                    <h4>@LanguageService.GetText("วิธีการชำระเงิน", "Payment Instructions")</h4>
+                    <ol>
+                        <li>@LanguageService.GetText("เปิดแอปธนาคารหรือแอป PromptPay", "Open your banking app or PromptPay app")</li>
+                        <li>@LanguageService.GetText("สแกน QR Code ด้านบน", "Scan the QR Code above")</li>
+                        <li>@LanguageService.GetText("ยืนยันการชำระเงิน", "Confirm the payment")</li>
+                        <li>@LanguageService.GetText("รอการยืนยันจากระบบ", "Wait for system confirmation")</li>
+                    </ol>
+                </div>
+            </div>
+
+            <div class="payment-status">
+                @if (paymentStatus == "pending")
+                {
+                    <div class="status-pending">
+                        <div class="status-icon">⏳</div>
+                        <p>@LanguageService.GetText("รอการชำระเงิน...", "Waiting for payment...")</p>
+                        <div class="countdown">
+                            @LanguageService.GetText("หมดเวลาใน:", "Expires in:") @timeRemaining
+                        </div>
+                        <button class="btn-test-success" @onclick="SimulatePaymentSuccess">
+                            @LanguageService.GetText("🧪 ข้ามการจ่าย (สำหรับทดสอบ)", "🧪 Skip Payment (Test)")
+                        </button>
+                    </div>
+                }
+                else if (paymentStatus == "successful")
+                {
+                    <div class="status-success">
+                        <div class="status-icon">✅</div>
+                        <p>@LanguageService.GetText("การชำระเงินสำเร็จ!", "Payment Successful!")</p>
+                        <button class="btn-primary" @onclick="GoToOrderSuccess">
+                            @LanguageService.GetText("ดูใบเสร็จ", "View Receipt")
+                        </button>
+                    </div>
+                }
+                else if (paymentStatus == "failed")
+                {
+                    <div class="status-failed">
+                        <div class="status-icon">❌</div>
+                        <p>@LanguageService.GetText("การชำระเงินล้มเหลว", "Payment Failed")</p>
+                        <button class="btn-primary" @onclick="RetryPayment">
+                            @LanguageService.GetText("ลองใหม่", "Try Again")
+                        </button>
+                    </div>
+                }
+            </div>
+        </div>
+    }
+    else if (hasError)
+    {
+        <div class="error-container">
+            <div class="error-icon">⚠️</div>
+            <h3>@LanguageService.GetText("เกิดข้อผิดพลาด", "An Error Occurred")</h3>
+            <p>@LanguageService.GetText("ไม่สามารถสร้าง QR Code ได้ กรุณาลองใหม่อีกครั้ง", "Unable to generate QR Code. Please try again.")</p>
+            <button class="btn-primary" @onclick="RetryPayment">
+                @LanguageService.GetText("ลองใหม่", "Try Again")
+            </button>
+        </div>
+    }
+</div>
+
+@code {
+    private List<CartItem> cartItems = new();
+    private decimal totalAmount;
+    private OmiseCharge? charge;
+    private bool isLoading = true;
+    private bool hasError = false;
+    private string paymentStatus = "pending";
+    private string timeRemaining = "";
+    private Timer? statusTimer;
+    private Timer? countdownTimer;
+    private DateTime expiryTime;
+
+    protected override async Task OnInitializedAsync()
+    {
+        LanguageService.LanguageChanged += StateHasChanged;
+        cartItems = CartService.GetCartItems();
+        totalAmount = CartService.GetCartTotal();
+
+        if (cartItems.Any())
+        {
+            await CreatePaymentAsync();
+        }
+    }
+
+    protected override void OnAfterRender(bool firstRender)
+    {
+        if (firstRender && !cartItems.Any())
+        {
+            Navigation.NavigateTo("/cart");
+        }
+    }
+
+    private async Task CreatePaymentAsync()
+    {
+        try
+        {
+            isLoading = true;
+            hasError = false;
+            StateHasChanged();
+
+            var description = LanguageService.GetText(
+                $"คำสั่งซื้อ {cartItems.Count} รายการ",
+                $"Order of {cartItems.Count} items"
+            );
+
+            charge = await PaymentService.CreatePromptPayChargeAsync(totalAmount, description);
+
+            if (charge != null && charge.Source?.ScannableCode?.Image != null)
+            {
+                expiryTime = DateTime.UtcNow.AddMinutes(5); // Set 5 minutes limit
+                StartStatusPolling();
+                StartCountdownTimer();
+            }
+            else
+            {
+                hasError = true;
+            }
+        }
+        catch (Exception ex)
+        {
+            Console.WriteLine($"Error creating payment: {ex.Message}");
+            hasError = true;
+        }
+        finally
+        {
+            isLoading = false;
+            StateHasChanged();
+        }
+    }
+
+    private void StartStatusPolling()
+    {
+        statusTimer = new Timer(async _ => await CheckPaymentStatus(), null, TimeSpan.FromSeconds(5), TimeSpan.FromSeconds(5));
+    }
+
+    private void StartCountdownTimer()
+    {
+        countdownTimer = new Timer(_ => UpdateCountdown(), null, TimeSpan.Zero, TimeSpan.FromSeconds(1));
+    }
+
+    private async Task CheckPaymentStatus()
+    {
+        if (charge?.Id == null || paymentStatus != "pending") return;
+
+        try
+        {
+            var updatedCharge = await PaymentService.GetChargeStatusAsync(charge.Id);
+            if (updatedCharge != null)
+            {
+                if (updatedCharge.Paid)
+                {
+                    paymentStatus = "successful";
+                    statusTimer?.Dispose();
+                    countdownTimer?.Dispose();
+                    await InvokeAsync(StateHasChanged);
+                }
+                else if (updatedCharge.Status == "failed" || DateTime.UtcNow > expiryTime)
+                {
+                    paymentStatus = "failed";
+                    statusTimer?.Dispose();
+                    countdownTimer?.Dispose();
+                    await InvokeAsync(StateHasChanged);
+                }
+            }
+        }
+        catch (Exception ex)
+        {
+            Console.WriteLine($"Error checking payment status: {ex.Message}");
+        }
+    }
+
+    private void UpdateCountdown()
+    {
+        var remaining = expiryTime - DateTime.UtcNow;
+        if (remaining.TotalSeconds <= 0)
+        {
+            timeRemaining = "00:00";
+            if (paymentStatus == "pending")
+            {
+                paymentStatus = "failed";
+                statusTimer?.Dispose();
+                countdownTimer?.Dispose();
+                InvokeAsync(StateHasChanged);
+            }
+        }
+        else
+        {
+            timeRemaining = $"{remaining.Minutes:D2}:{remaining.Seconds:D2}";
+            InvokeAsync(StateHasChanged);
+        }
+    }
+
+    private string GetBeverageName(BeverageItem beverage)
+    {
+        return LanguageService.CurrentLanguage == Language.Thai ? beverage.NameThai : beverage.NameEnglish;
+    }
+
+    private void GoBackToCart()
+    {
+        Navigation.NavigateTo("/cart");
+    }
+
+    private async Task RetryPayment()
+    {
+        paymentStatus = "pending";
+        statusTimer?.Dispose();
+        countdownTimer?.Dispose();
+        await CreatePaymentAsync();
+    }
+
+    private void SimulatePaymentSuccess()
+    {
+        paymentStatus = "successful";
+        statusTimer?.Dispose();
+        countdownTimer?.Dispose();
+        StateHasChanged();
+    }
+
+    private void GoToOrderSuccess()
+    {
+        CartService.ClearCart();
+        Navigation.NavigateTo("/order-success");
+    }
+
+    public void Dispose()
+    {
+        LanguageService.LanguageChanged -= StateHasChanged;
+        statusTimer?.Dispose();
+        countdownTimer?.Dispose();
+    }
+}

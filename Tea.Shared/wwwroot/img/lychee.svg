@@ -1,0 +1,50 @@
+<svg viewBox="0 0 200 200" xmlns="http://www.w3.org/2000/svg">
+  <!-- Background -->
+  <rect width="200" height="200" fill="#F5DEB3"/>
+  
+  <!-- Cup -->
+  <ellipse cx="100" cy="170" rx="45" ry="8" fill="#8B4513" opacity="0.3"/>
+  <rect x="70" y="80" width="60" height="80" rx="8" fill="#8B4513" stroke="#6B3410" stroke-width="2"/>
+  
+  <!-- Lychee Drink -->
+  <rect x="75" y="85" width="50" height="70" rx="5" fill="#F0F8FF"/>
+  
+  <!-- Lychee Pieces -->
+  <ellipse cx="90" cy="100" rx="5" ry="6" fill="#FFFFFF"/>
+  <ellipse cx="110" cy="105" rx="4" ry="5" fill="#FFFFFF"/>
+  <ellipse cx="100" cy="115" rx="6" ry="4" fill="#FFFFFF"/>
+  <ellipse cx="85" cy="120" rx="4" ry="5" fill="#FFFFFF"/>
+  <ellipse cx="115" cy="125" rx="3" ry="4" fill="#FFFFFF"/>
+  
+  <!-- Lychee Texture -->
+  <circle cx="90" cy="100" r="1" fill="#FFB6C1" opacity="0.5"/>
+  <circle cx="110" cy="105" r="0.8" fill="#FFB6C1" opacity="0.5"/>
+  <circle cx="100" cy="115" r="1.2" fill="#FFB6C1" opacity="0.5"/>
+  
+  <!-- Ice -->
+  <rect x="80" y="130" width="8" height="8" fill="#E6F3FF" opacity="0.8"/>
+  <rect x="110" y="135" width="6" height="6" fill="#E6F3FF" opacity="0.8"/>
+  
+  <!-- Bubbles -->
+  <circle cx="85" cy="135" r="8" fill="#6B3410"/>
+  <circle cx="105" cy="125" r="6" fill="#6B3410"/>
+  <circle cx="95" cy="145" r="7" fill="#6B3410"/>
+  <circle cx="115" cy="140" r="5" fill="#6B3410"/>
+  <circle cx="90" cy="150" r="6" fill="#6B3410"/>
+  
+  <!-- Clear Straw -->
+  <rect x="115" y="60" width="4" height="70" fill="#E6E6FA" stroke="#C0C0C0" stroke-width="1" transform="rotate(15 117 95)"/>
+  
+  <!-- Fresh Lychees on Side -->
+  <circle cx="45" cy="55" r="8" fill="#FFB6C1"/>
+  <path d="M42 52 Q45 50 48 52" stroke="#FF69B4" stroke-width="1" fill="none"/>
+  <path d="M42 58 Q45 60 48 58" stroke="#FF69B4" stroke-width="1" fill="none"/>
+  
+  <circle cx="155" cy="65" r="6" fill="#FFB6C1"/>
+  <path d="M153 62 Q155 61 157 62" stroke="#FF69B4" stroke-width="1" fill="none"/>
+  
+  <!-- Sparkling Effect -->
+  <circle cx="95" cy="90" r="1" fill="#FFFFFF" opacity="0.8"/>
+  <circle cx="105" cy="95" r="0.8" fill="#FFFFFF" opacity="0.8"/>
+  <circle cx="115" cy="100" r="1.2" fill="#FFFFFF" opacity="0.8"/>
+</svg>

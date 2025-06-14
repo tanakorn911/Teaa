@@ -1,0 +1,108 @@
+@rendermode @(AppDomain.CurrentDomain.FriendlyName.Contains("Tea.Web") ? Microsoft.AspNetCore.Components.Web.RenderMode.InteractiveServer : null)
+@page "/order-success"
+@using Tea.Shared.Services
+@using Tea.Shared.Models
+@using Tea.Shared.Components
+@inject LanguageService LanguageService
+@inject CartService CartService
+@inject NavigationManager Navigation
+@implements IDisposable
+
+<PageTitle>@LanguageService.GetText("สั่งซื้อสำเร็จ - BUBBLICIOUS", "Order Success - BUBBLICIOUS")</PageTitle>
+
+<div class="order-success-container">
+    <div class="language-toggle-container">
+        <LanguageToggle />
+    </div>
+
+    <div class="success-content">
+        <div class="celebration-animation">
+            <div class="confetti">
+                <div class="confetti-piece confetti-1">🎉</div>
+                <div class="confetti-piece confetti-2">🎊</div>
+                <div class="confetti-piece confetti-3">✨</div>
+                <div class="confetti-piece confetti-4">🎉</div>
+                <div class="confetti-piece confetti-5">🎊</div>
+                <div class="confetti-piece confetti-6">✨</div>
+            </div>
+        </div>
+
+        <div class="success-icon">
+            <div class="checkmark">✓</div>
+        </div>
+
+        <h1 class="success-title">
+            @LanguageService.GetText("เย้! สั่งซื้อสำเร็จแล้ว!", "Woohoo! Order Placed Successfully!")
+        </h1>
+
+        <div class="order-details">
+            <div class="order-number">
+                <span class="label">@LanguageService.GetText("หมายเลขคำสั่งซื้อ:", "Order Number:")</span>
+                <span class="number">@orderNumber</span>
+            </div>
+
+            <div class="preparation-time">
+                <div class="time-icon">⏰</div>
+                <div class="time-info">
+                    <h3>@LanguageService.GetText("เวลาในการเตรียม", "Preparation Time")</h3>
+                    <p class="time-estimate">@preparationTime @LanguageService.GetText("นาที", "minutes")</p>
+                    <p class="time-note">@LanguageService.GetText("โปรดรอรับเครื่องดื่มที่เคาน์เตอร์", "Please wait for your order at the counter")</p>
+                </div>
+            </div>
+
+            <div class="thank-you-message">
+                <h3>@LanguageService.GetText("ขอบคุณที่ใช้บริการ", "Thank you for your order!")</h3>
+                <p>@LanguageService.GetText("เราจะเตรียมเครื่องดื่มสดใหม่ให้คุณด้วยความใส่ใจ", "We'll prepare your fresh beverages with care")</p>
+            </div>
+        </div>
+
+        <div class="action-buttons">
+            <button class="btn-primary order-again-btn" @onclick="OrderAgain">
+                @LanguageService.GetText("สั่งใหม่อีกครั้ง", "Order Again")
+            </button>
+            <button class="btn-secondary" @onclick="GoToMenu">
+                @LanguageService.GetText("ดูเมนู", "View Menu")
+            </button>
+        </div>
+
+        <div class="floating-bubbles-success">
+            <div class="bubble-success bubble-1"></div>
+            <div class="bubble-success bubble-2"></div>
+            <div class="bubble-success bubble-3"></div>
+            <div class="bubble-success bubble-4"></div>
+        </div>
+    </div>
+</div>
+
+@code {
+    private string orderNumber = "";
+    private int preparationTime = 12;
+
+    protected override void OnInitialized()
+    {
+        LanguageService.LanguageChanged += StateHasChanged;
+        orderNumber = CartService.GenerateOrderNumber();
+        
+        // สุ่มเวลาเตรียมระหว่าง 10-15 นาที
+        var random = new Random();
+        preparationTime = random.Next(10, 16);
+        
+        // ล้างตะกร้าหลังจากสั่งซื้อสำเร็จ
+        CartService.ClearCart();
+    }
+
+    private void OrderAgain()
+    {
+        Navigation.NavigateTo("/");
+    }
+
+    private void GoToMenu()
+    {
+        Navigation.NavigateTo("/menu");
+    }
+
+    public void Dispose()
+    {
+        LanguageService.LanguageChanged -= StateHasChanged;
+    }
+}

@@ -1,0 +1,75 @@
+@rendermode @(AppDomain.CurrentDomain.FriendlyName.Contains("Tea.Web") ? Microsoft.AspNetCore.Components.Web.RenderMode.InteractiveServer : null)
+@page "/"
+@using Tea.Shared.Services
+@using Tea.Shared.Models
+@using Tea.Shared.Components
+@inject LanguageService LanguageService
+@inject NavigationManager Navigation
+@implements IDisposable
+
+<PageTitle>@LanguageService.GetText("BUBBLICIOUS - ชาไข่มุกรสเลิศ", "BUBBLICIOUS - Premium Bubble Tea")</PageTitle>
+
+<div class="home-container">
+    <div class="language-toggle-container">
+        <LanguageToggle />
+    </div>
+
+    <div class="hero-section">
+        <div class="brand-title">
+            <h1 class="main-title">BUBBLICIOUS</h1>
+            <p class="subtitle">@LanguageService.GetText("ชาไข่มุกรสเลิศที่คุณหลงรัก", "Premium Bubble Tea You'll Love")</p>
+        </div>
+
+        <div class="bubble-tea-character">
+            <div class="cup">
+                <div class="cup-body"></div>
+                <div class="cup-lid"></div>
+                <div class="straw"></div>
+                <div class="pearls">
+                    <div class="pearl pearl-1"></div>
+                    <div class="pearl pearl-2"></div>
+                    <div class="pearl pearl-3"></div>
+                    <div class="pearl pearl-4"></div>
+                    <div class="pearl pearl-5"></div>
+                </div>
+            </div>
+            <div class="character-face">
+                <div class="eyes">
+                    <div class="eye eye-left"></div>
+                    <div class="eye eye-right"></div>
+                </div>
+                <div class="mouth"></div>
+            </div>
+        </div>
+
+        <button class="cta-button" @onclick="NavigateToMenu">
+            @LanguageService.GetText("ดื่มเลย!", "SIP IT UP!")
+        </button>
+    </div>
+
+    <div class="floating-bubbles">
+        <div class="bubble bubble-1"></div>
+        <div class="bubble bubble-2"></div>
+        <div class="bubble bubble-3"></div>
+        <div class="bubble bubble-4"></div>
+        <div class="bubble bubble-5"></div>
+        <div class="bubble bubble-6"></div>
+    </div>
+</div>
+
+@code {
+    protected override void OnInitialized()
+    {
+        LanguageService.LanguageChanged += StateHasChanged;
+    }
+
+    private void NavigateToMenu()
+    {
+        Navigation.NavigateTo("/menu");
+    }
+
+    public void Dispose()
+    {
+        LanguageService.LanguageChanged -= StateHasChanged;
+    }
+}

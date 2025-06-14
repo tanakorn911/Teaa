@@ -1,0 +1,33 @@
+@using Tea.Shared.Layout
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <base href="/" />
+    <link rel="stylesheet" href="_content/Tea.Shared/bootstrap/bootstrap.min.css" />
+    <link rel="stylesheet" href="_content/Tea.Shared/app.css" />
+    <link rel="stylesheet" href="bubble-tea-styles.css" />
+    <link rel="stylesheet" href="Tea.Web.styles.css" />
+    <link rel="icon" type="image/png" href="_content/Tea.Shared/favicon.png" />
+    <HeadOutlet />
+</head>
+
+<body>
+    <Router AppAssembly="@typeof(Tea.Shared.Services.LanguageService).Assembly">
+        <Found Context="routeData">
+            <RouteView RouteData="routeData" DefaultLayout="@typeof(MainLayout)" />
+            <FocusOnNavigate RouteData="routeData" Selector="h1" />
+        </Found>
+        <NotFound>
+            <PageTitle>Page not found</PageTitle>
+            <LayoutView Layout="@typeof(MainLayout)">
+                <p role="alert">Sorry, there's nothing at this address.</p>
+            </LayoutView>
+        </NotFound>
+    </Router>
+    <script src="_framework/blazor.web.js"></script>
+</body>
+
+</html>

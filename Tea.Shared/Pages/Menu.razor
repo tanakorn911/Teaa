@@ -1,0 +1,112 @@
+@rendermode @(AppDomain.CurrentDomain.FriendlyName.Contains("Tea.Web") ? Microsoft.AspNetCore.Components.Web.RenderMode.InteractiveServer : null)
+@page "/menu"
+@using Tea.Shared.Services
+@using Tea.Shared.Models
+@using Tea.Shared.Components
+@inject LanguageService LanguageService
+@inject BeverageService BeverageService
+@inject NavigationManager Navigation
+@implements IDisposable
+
+<PageTitle>@LanguageService.GetText("เมนู - BUBBLICIOUS", "Menu - BUBBLICIOUS")</PageTitle>
+
+<div class="menu-container">
+    <div class="language-toggle-container">
+        <LanguageToggle />
+    </div>
+
+    <div class="menu-header">
+        <h1 class="menu-title">@LanguageService.GetText("ปลื้มใจไปกับรสชาติ", "Bless Your Taste Buds")</h1>
+        
+        <div class="category-filters">
+            <button class="filter-btn @(selectedCategory == null ? "active" : "")" 
+                    @onclick="() => FilterByCategory(null)">
+                @LanguageService.GetText("ทั้งหมด", "All")
+            </button>
+            <button class="filter-btn @(selectedCategory == BeverageCategory.Coffee ? "active" : "")" 
+                    @onclick="() => FilterByCategory(BeverageCategory.Coffee)">
+                @LanguageService.GetText("กาแฟ", "Coffee")
+            </button>
+            <button class="filter-btn @(selectedCategory == BeverageCategory.Tea ? "active" : "")" 
+                    @onclick="() => FilterByCategory(BeverageCategory.Tea)">
+                @LanguageService.GetText("ชา", "Tea")
+            </button>
+            <button class="filter-btn @(selectedCategory == BeverageCategory.Fruit ? "active" : "")" 
+                    @onclick="() => FilterByCategory(BeverageCategory.Fruit)">
+                @LanguageService.GetText("ผลไม้", "Fruit")
+            </button>
+            <button class="filter-btn @(selectedCategory == BeverageCategory.Special ? "active" : "")" 
+                    @onclick="() => FilterByCategory(BeverageCategory.Special)">
+                @LanguageService.GetText("พิเศษ", "Special")
+            </button>
+        </div>
+    </div>
+
+    <div class="beverages-grid">
+        @foreach (var beverage in filteredBeverages)
+        {
+            <div class="beverage-card" @onclick="() => NavigateToDetail(beverage.Id)">
+                <div class="beverage-image">
+                    <img src="@beverage.ImageUrl" alt="@GetBeverageName(beverage)" onerror="this.src='/img/default-beverage.svg'" />
+                    @if (beverage.IsVegetarian)
+                    {
+                        <div class="vegetarian-badge">🌱</div>
+                    }
+                </div>
+                
+                <div class="beverage-info">
+                    <h3 class="beverage-name">@GetBeverageName(beverage)</h3>
+                    <p class="beverage-description">@GetBeverageDescription(beverage)</p>
+                    <div class="beverage-footer">
+                        <span class="beverage-price">฿@beverage.Price</span>
+                        <button class="add-btn" @onclick:stopPropagation="true" @onclick="() => NavigateToDetail(beverage.Id)">
+                            @LanguageService.GetText("เพิ่ม", "Add")
+                        </button>
+                    </div>
+                </div>
+            </div>
+        }
+    </div>
+</div>
+
+@code {
+    private List<BeverageItem> allBeverages = new();
+    private List<BeverageItem> filteredBeverages = new();
+    private BeverageCategory? selectedCategory = null;
+
+    protected override void OnInitialized()
+    {
+        LanguageService.LanguageChanged += StateHasChanged;
+        allBeverages = BeverageService.GetAllBeverages();
+        filteredBeverages = allBeverages;
+    }
+
+    private void FilterByCategory(BeverageCategory? category)
+    {
+        selectedCategory = category;
+        filteredBeverages = category == null 
+            ? allBeverages 
+            : BeverageService.GetBeveragesByCategory(category.Value);
+        StateHasChanged();
+    }
+
+    private string GetBeverageName(BeverageItem beverage)
+    {
+        return LanguageService.CurrentLanguage == Language.Thai ? beverage.NameThai : beverage.NameEnglish;
+    }
+
+    private string GetBeverageDescription(BeverageItem beverage)
+    {
+        return LanguageService.CurrentLanguage == Language.Thai ? beverage.DescriptionThai : beverage.DescriptionEnglish;
+    }
+
+    private void NavigateToDetail(int beverageId)
+    {
+        Navigation.NavigateTo($"/product/{beverageId}");
+    }
+
+    public void Dispose()
+    {
+        LanguageService.LanguageChanged -= StateHasChanged;
+    }
+}

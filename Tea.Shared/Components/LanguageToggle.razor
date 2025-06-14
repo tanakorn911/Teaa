@@ -1,0 +1,33 @@
+@rendermode @(AppDomain.CurrentDomain.FriendlyName.Contains("Tea.Web") ? Microsoft.AspNetCore.Components.Web.RenderMode.InteractiveServer : null)
+@using Tea.Shared.Services
+@using Tea.Shared.Models
+@inject LanguageService LanguageService
+@implements IDisposable
+
+<div class="language-toggle">
+    <button class="btn-language @(LanguageService.CurrentLanguage == Language.Thai ? "active" : "")" 
+            @onclick="() => SetLanguage(Language.Thai)">
+        ไทย
+    </button>
+    <button class="btn-language @(LanguageService.CurrentLanguage == Language.English ? "active" : "")" 
+            @onclick="() => SetLanguage(Language.English)">
+        EN
+    </button>
+</div>
+
+@code {
+    protected override void OnInitialized()
+    {
+        LanguageService.LanguageChanged += StateHasChanged;
+    }
+
+    private void SetLanguage(Language language)
+    {
+        LanguageService.SetLanguage(language);
+    }
+
+    public void Dispose()
+    {
+        LanguageService.LanguageChanged -= StateHasChanged;
+    }
+}
